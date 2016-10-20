@@ -184,7 +184,7 @@ namespace FactoryPrototype
 
 								if (receiver == null) {
 									// put item on floor
-									map.Tiles[i,j].items.Add(output);
+									FindAdjacentTile(i, j, port).items.Add(output);
 
 								} else {
 									// put item in matching input of receiver
@@ -207,8 +207,7 @@ namespace FactoryPrototype
 		/// <param name="port">The port that gives the direction to check.</param>
 		///
 		/// <returns>The adjacent machine, if one exists.</returns>
-		Machine FindAdjacentMachine (int x, int y, Port port)
-		{
+		Machine FindAdjacentMachine (int x, int y, Port port) {
 			switch (port) {
 			case Port.LowerNorth:
 			case Port.UpperNorth:
@@ -227,7 +226,34 @@ namespace FactoryPrototype
 				// get machine to the west
 				return machines[x-1,y];
 			default:
+				// Must be a central port.
+				// Machines can't pass to themself so return nothing.
+				// (it would make an infinite loop if they pass to themself).
 				return null;
+			}
+		}
+
+		Tile FindAdjacentTile (int x, int y, Port port) {
+			switch (port) {
+			case Port.LowerNorth:
+			case Port.UpperNorth:
+				// get machine to the north
+				return map.Tiles[x, y-1];
+			case Port.LowerEast:
+			case Port.UpperEast:
+				// get machine to the east
+				return map.Tiles[x+1,y];
+			case Port.LowerSouth:
+			case Port.UpperSouth:
+				// get machine to the south
+				return map.Tiles[x, y+1];
+			case Port.LowerWest:
+			case Port.UpperWest:
+				// get machine to the west
+				return map.Tiles[x-1,y];
+			default:
+				// Must be a central port, so it is the same tile.
+				return map.Tiles[x,y];
 			}
 		}
 

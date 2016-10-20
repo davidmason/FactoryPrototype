@@ -17,7 +17,7 @@ namespace FactoryPrototype
 
 			EggBoiler boiler1 = new EggBoiler ();
 			EggBoiler boiler2 = new EggBoiler ();
-			gm.machines [3, 2] = boiler1;
+			gm.machines [3, 1] = boiler1;
 			gm.machines [2, 4] = boiler2;
 
 			gm.Update ();
@@ -64,6 +64,14 @@ namespace FactoryPrototype
 
 			Console.WriteLine ();
 			map.Print ();
+
+
+			Console.WriteLine ("Mess on floor at [2,5]:");
+			foreach (Item item in map.Tiles [2, 5].items) {
+				Console.Write (item.ToString () + ", ");
+			}
+			Console.WriteLine ();
+
 			Console.ReadLine ();
 		}
 	}

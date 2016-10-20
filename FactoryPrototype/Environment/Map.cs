@@ -13,6 +13,7 @@ namespace FactoryPrototype
 
 		private Tile[,] tiles;
 
+		// Dimensions are [x,y].
 		public Tile[,] Tiles {
 			get {
 				return tiles;
@@ -25,14 +26,14 @@ namespace FactoryPrototype
 
 			// just a simple 5*5 room with a wall around the outside
 			// and a drain in the middle
-			for (int i = 0; i < DEFAULT_WIDTH; i++) {
-				for (int j = 0; j < DEFAULT_HEIGHT; j++) {
-					if (i == 3 && j == 3) {
-						tiles [i, j] = Tile.NewDrain ();
-					} else if (i == 0 || j == 0 || i == DEFAULT_WIDTH - 1 || j == DEFAULT_HEIGHT - 1) {
-						tiles [i,j] = Tile.NewWall();
+			for (int x = 0; x < DEFAULT_WIDTH; x++) {
+				for (int y = 0; y < DEFAULT_HEIGHT; y++) {
+					if (x == 3 && y == 3) {
+						tiles [x, y] = Tile.NewDrain ();
+					} else if (x == 0 || y == 0 || x == DEFAULT_WIDTH - 1 || y == DEFAULT_HEIGHT - 1) {
+						tiles [x,y] = Tile.NewWall();
 					} else {
-						tiles [i,j] = Tile.NewFloor();
+						tiles [x,y] = Tile.NewFloor();
 					}
 				}
 			}
@@ -42,10 +43,10 @@ namespace FactoryPrototype
 		/// Print the map to the console.
 		/// </summary>
 		public void Print() {
-			for (int i = 0; i < DEFAULT_WIDTH; i++) {
-				for (int j = 0; j < DEFAULT_HEIGHT; j++) {
+			for (int y = 0; y < DEFAULT_HEIGHT; y++) {
+				for (int x = 0; x < DEFAULT_WIDTH; x++) {
 					string representation;
-					Tile tile = tiles [i, j];
+					Tile tile = tiles [x, y];
 					// TODO extract this to a static method
 					switch (tile.type) {
 

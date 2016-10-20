@@ -5,23 +5,12 @@ using System.Linq;
 namespace FactoryPrototype
 {
 	/**
-	 * A machine that turns raw eggs into boiled eggs.
+	 * A machine that peels hard-boiled eggs.
 	 * 
-	 * Cooking time can be adjusted, so it can output
-	 * anything from fully raw eggs to completely burned
-	 * eggs.
-	 * 
-	 * For simplicity, cookedness will just be a number
-	 * (which can be categorized later as things like
-	 * "soft-boiled", "hard-boiled", "overcooked", etc.).
-	 * 
-	 * The inputs are water, electricity and eggs (raw or already partly cooked).
-	 * The output is eggs (probably more cooked than the inputs).
-	 * 
-	 * Other things could probably be input. It could probably
-	 * boil a decent potato, for example.
+	 * It will try to peel anything you give it though, but there's a
+	 * good chance of failure.
 	 */
-	public class EggBoiler : Machine
+	public class EggPeeler : Machine
 	{
 		// TODO standard way to specify the input ports (type, location on machine)
 		// TODO standard way to receive an input (which may be dropped if machine is overloaded)
@@ -48,12 +37,11 @@ namespace FactoryPrototype
 
 
 		// Hopper that just accumulates some items ready to process.
-		private Queue<Item> inputHopper = new Queue<Item> ();
-
+		private List<Item> inputHopper = new List<Item>();
 		private const int INPUT_HOPPER_CAPACITY = 2;
 
 
-		public EggBoiler ()
+		public EggPeeler ()
 		{
 		}
 
@@ -64,23 +52,6 @@ namespace FactoryPrototype
 		/// </summary>
 		public void Update () {
 			Console.WriteLine ("Machine update called...");
-
-			// If an egg is in the input hopper, boil it.
-			// TODO standard way to apply heat to objects instead.
-			// TODO add boiling progress, rather than instantaneous boilage
-
-
-			if (inputHopper.Count > 0) {
-				Item itemFromHopper = inputHopper.Dequeue ();
-				if (itemFromHopper.GetType() == typeof(Egg)) {
-					Console.WriteLine ("Boiled an egg.");
-					outputs [(int)Port.UpperSouth] = new BoiledEgg ();
-				} else {
-					Console.Error.WriteLine ("EggBoiler can't boil " + itemFromHopper.ToString () + ". Dumping on ground.");
-					outputs [(int)Port.LowerCenter] = itemFromHopper;
-				}
-			}
-
 
 			// iterate inputs, move mismatched things to output
 			// (the dropping and filling the hopper can be abstracted to parent class)
@@ -94,7 +65,7 @@ namespace FactoryPrototype
 					switch (port) {
 					case Port.UpperNorth:
 						if (inputHopper.Count < INPUT_HOPPER_CAPACITY) {
-							inputHopper.Enqueue (item);
+							inputHopper.Add (item);
 						} else {
 							Console.WriteLine (item.ToString () + " doesn't fit. Dropped on the floor.");
 							// send item to matching lower output port (just bounces off the machine and falls)
