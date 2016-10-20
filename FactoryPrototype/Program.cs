@@ -17,8 +17,8 @@ namespace FactoryPrototype
 
 			EggBoiler boiler = new EggBoiler ();
 			EggPeeler peeler = new EggPeeler ();
-			gm.machines [4, 2] = boiler;
-			gm.machines [4, 3] = peeler;
+			map.Machines [4, 2] = boiler;
+			map.Machines [4, 3] = peeler;
 
 			gm.Update ();
 
@@ -49,7 +49,9 @@ namespace FactoryPrototype
 			gm.Update ();
 			map.Print ();
 
-
+			Console.WriteLine ();
+			map.PrintLegend ();
+			Console.WriteLine ();
 
 			Console.WriteLine ("Mess on floor at [4,4]:");
 			foreach (Item item in map.Tiles [4, 4].items) {

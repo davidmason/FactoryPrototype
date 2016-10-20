@@ -11,19 +11,10 @@ namespace FactoryPrototype
 	public class GameManager
 	{
 		Map map;
-		// TODO maybe move this to the map or a different manager
-		Machine[,] _machines;
-
-		public Machine[,] machines {
-			get {
-				return _machines;
-			}
-		}
 
 		public GameManager (Map map)
 		{
 			this.map = map;
-			_machines = new Machine[Map.DEFAULT_WIDTH,Map.DEFAULT_HEIGHT];
 		}
 
 	
@@ -166,9 +157,9 @@ namespace FactoryPrototype
 
 			// iterate each machine
 
-			for (int i = 0; i < machines.GetLength (0); i++) {
-				for (int j = 0; j < machines.GetLength (1); j++) {
-					Machine machine = machines [i, j];
+			for (int i = 0; i < map.Machines.GetLength (0); i++) {
+				for (int j = 0; j < map.Machines.GetLength (1); j++) {
+					Machine machine = map.Machines [i, j];
 					if (machine != null) {
 
 						// iterate the outputs of that machine
@@ -198,6 +189,7 @@ namespace FactoryPrototype
 			}
 		}
 
+		// TODO move to Map
 		/// <summary>
 		/// Find the adjacent machine, if there is one.
 		/// </summary>
@@ -212,19 +204,19 @@ namespace FactoryPrototype
 			case Port.LowerNorth:
 			case Port.UpperNorth:
 				// get machine to the north
-				return machines[x, y-1];
+				return map.Machines[x, y-1];
 			case Port.LowerEast:
 			case Port.UpperEast:
 				// get machine to the east
-				return machines[x+1,y];
+				return map.Machines[x+1,y];
 			case Port.LowerSouth:
 			case Port.UpperSouth:
 				// get machine to the south
-				return machines[x, y+1];
+				return map.Machines[x, y+1];
 			case Port.LowerWest:
 			case Port.UpperWest:
 				// get machine to the west
-				return machines[x-1,y];
+				return map.Machines[x-1,y];
 			default:
 				// Must be a central port.
 				// Machines can't pass to themself so return nothing.
@@ -233,6 +225,7 @@ namespace FactoryPrototype
 			}
 		}
 
+		// TODO move to Map
 		Tile FindAdjacentTile (int x, int y, Port port) {
 			switch (port) {
 			case Port.LowerNorth:
@@ -273,9 +266,9 @@ namespace FactoryPrototype
 		{
 			// TODO single-pass of Update() on each machine
 
-			for (int i = 0; i < machines.GetLength (0); i++) {
-				for (int j = 0; j < machines.GetLength (1); j++) {
-					Machine machine = machines [i, j];
+			for (int i = 0; i < map.Machines.GetLength (0); i++) {
+				for (int j = 0; j < map.Machines.GetLength (1); j++) {
+					Machine machine = map.Machines [i, j];
 					if (machine != null) {
 						machine.Update ();
 					}
