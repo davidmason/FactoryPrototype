@@ -15,59 +15,50 @@ namespace FactoryPrototype
 			// TODO add a machine at some position
 			//      probably want an array of machines, in the map?
 
-			EggBoiler boiler1 = new EggBoiler ();
-			EggBoiler boiler2 = new EggBoiler ();
-			gm.machines [3, 1] = boiler1;
-			gm.machines [2, 4] = boiler2;
+			EggBoiler boiler = new EggBoiler ();
+			EggPeeler peeler = new EggPeeler ();
+			gm.machines [4, 2] = boiler;
+			gm.machines [4, 3] = peeler;
 
 			gm.Update ();
 
 
-			Console.WriteLine ("Insert first and second egg into each machine.");
+			Console.WriteLine ("Insert 3 eggs into the boiler (with updates after each).");
 
-			boiler1.inputs [(int)Port.UpperNorth] = new Egg ();
-			boiler2.inputs [(int)Port.UpperNorth] = new Egg ();
-
+			boiler.inputs [(int)Port.UpperNorth] = new Egg ();
+			gm.Update ();
+			boiler.inputs [(int)Port.UpperNorth] = new Egg ();
+			gm.Update ();
+			boiler.inputs [(int)Port.UpperNorth] = new Egg ();
 			gm.Update ();
 
-			boiler1.inputs [(int)Port.UpperNorth] = new Egg ();
-			boiler2.inputs [(int)Port.UpperNorth] = new Egg ();
+			Console.WriteLine ("Running simulation for a while...");
 
 			gm.Update ();
-
-			Console.WriteLine ("Attempt to insert third egg in each machine. Expect to drop them.");
-
-			boiler1.inputs [(int)Port.UpperNorth] = new Egg ();
-			boiler2.inputs [(int)Port.UpperNorth] = new Egg ();
-
-			gm.Update ();
-
-			boiler1.inputs [(int)Port.UpperNorth] = new Egg ();
-			boiler2.inputs [(int)Port.UpperNorth] = new Egg ();
-
-			gm.Update ();
-
-
-//			for (int i = 0; i < 4; i++) {
-//				Console.WriteLine ("Inserting an egg");
-//				boiler.Input (0, new Egg ());
-//			}
-//
-//			for (int i = 0; i < 10; i++) {
-//				boiler2.Input (0, new Egg ());
-//			}
-
-			Console.WriteLine ();
 			map.Print ();
 
 			gm.Update ();
+			map.Print ();
 
-			Console.WriteLine ();
+			gm.Update ();
+			map.Print ();
+
+			gm.Update ();
+			map.Print ();
+
+			gm.Update ();
 			map.Print ();
 
 
-			Console.WriteLine ("Mess on floor at [2,5]:");
-			foreach (Item item in map.Tiles [2, 5].items) {
+
+			Console.WriteLine ("Mess on floor at [4,4]:");
+			foreach (Item item in map.Tiles [4, 4].items) {
+				Console.Write (item.ToString () + ", ");
+			}
+			Console.WriteLine ();
+
+			Console.WriteLine ("Mess on floor at [5,3]:");
+			foreach (Item item in map.Tiles [5, 3].items) {
 				Console.Write (item.ToString () + ", ");
 			}
 			Console.WriteLine ();

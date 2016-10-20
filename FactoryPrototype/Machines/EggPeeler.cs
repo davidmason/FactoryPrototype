@@ -37,7 +37,7 @@ namespace FactoryPrototype
 
 
 		// Hopper that just accumulates some items ready to process.
-		private List<Item> inputHopper = new List<Item>();
+		private Queue<Item> inputHopper = new Queue<Item> ();
 		private const int INPUT_HOPPER_CAPACITY = 2;
 
 
@@ -51,7 +51,27 @@ namespace FactoryPrototype
 		/// post: all inputs must be removed
 		/// </summary>
 		public void Update () {
-			Console.WriteLine ("Machine update called...");
+			Console.WriteLine ("EggPeeler.Update()");
+
+
+			if (inputHopper.Count > 0) {
+				Item itemFromHopper = inputHopper.Dequeue ();
+				if (itemFromHopper.GetType () == typeof(BoiledEgg)) {
+					Console.WriteLine ("Peeled an egg.");
+					outputs [(int)Port.UpperSouth] = new PeeledEgg ();
+					outputs [(int)Port.UpperEast] = new EggShell ();
+				} else if (itemFromHopper.GetType () == typeof(Egg)) {
+					Console.Error.WriteLine ("EggPeeler tried to peel " + itemFromHopper.ToString () + " and it did not go so well.");
+					outputs [(int)Port.UpperEast] = new EggShell ();
+					// TODO drop egg liquid on ground
+				} else {
+					Console.Error.WriteLine ("EggPeeler can't peel " + itemFromHopper.ToString () + ". Dumping on ground.");
+					outputs [(int)Port.LowerCenter] = itemFromHopper;
+				}
+			}
+
+
+
 
 			// iterate inputs, move mismatched things to output
 			// (the dropping and filling the hopper can be abstracted to parent class)
@@ -65,7 +85,7 @@ namespace FactoryPrototype
 					switch (port) {
 					case Port.UpperNorth:
 						if (inputHopper.Count < INPUT_HOPPER_CAPACITY) {
-							inputHopper.Add (item);
+							inputHopper.Enqueue (item);
 						} else {
 							Console.WriteLine (item.ToString () + " doesn't fit. Dropped on the floor.");
 							// send item to matching lower output port (just bounces off the machine and falls)

@@ -44,6 +44,8 @@
     <Compile Include="Machines\Machine.cs" />
     <Compile Include="Items\BoiledEgg.cs" />
     <Compile Include="Machines\EggPeeler.cs" />
+    <Compile Include="Items\PeeledEgg.cs" />
+    <Compile Include="Items\EggShell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -49,7 +49,6 @@ namespace FactoryPrototype
 
 		// Hopper that just accumulates some items ready to process.
 		private Queue<Item> inputHopper = new Queue<Item> ();
-
 		private const int INPUT_HOPPER_CAPACITY = 2;
 
 
@@ -63,13 +62,13 @@ namespace FactoryPrototype
 		/// post: all inputs must be removed
 		/// </summary>
 		public void Update () {
-			Console.WriteLine ("Machine update called...");
+			Console.WriteLine ("EggBoiler.Update()");
 
 			// If an egg is in the input hopper, boil it.
 			// TODO standard way to apply heat to objects instead.
 			// TODO add boiling progress, rather than instantaneous boilage
 
-
+			// TODO extract method to cook an egg
 			if (inputHopper.Count > 0) {
 				Item itemFromHopper = inputHopper.Dequeue ();
 				if (itemFromHopper.GetType() == typeof(Egg)) {
@@ -82,6 +81,9 @@ namespace FactoryPrototype
 			}
 
 
+			// TODO move this code to an abstract parent class or helper function
+			//      just move the legit inputs first, then all the leftovers must be
+			//      bounced off.
 			// iterate inputs, move mismatched things to output
 			// (the dropping and filling the hopper can be abstracted to parent class)
 			foreach (Port port in Ports.All) {
