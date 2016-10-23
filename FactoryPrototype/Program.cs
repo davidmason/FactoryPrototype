@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Threading;
 
 namespace FactoryPrototype
 {
@@ -25,29 +26,20 @@ namespace FactoryPrototype
 
 			Console.WriteLine ("Insert 3 eggs into the boiler (with updates after each).");
 
-			boiler.inputs [(int)Port.UpperNorth] = new Egg ();
-			gm.Update ();
-			boiler.inputs [(int)Port.UpperNorth] = new Egg ();
-			gm.Update ();
-			boiler.inputs [(int)Port.UpperNorth] = new Egg ();
-			gm.Update ();
+			// insert 10 eggs
+			for (int i = 0; i < 10; i++) {
+				boiler.inputs [(int)Port.UpperNorth] = new Egg ();
+				gm.Update ();
+				map.Print ();
+			}
 
 			Console.WriteLine ("Running simulation for a while...");
 
-			gm.Update ();
-			map.Print ();
-
-			gm.Update ();
-			map.Print ();
-
-			gm.Update ();
-			map.Print ();
-
-			gm.Update ();
-			map.Print ();
-
-			gm.Update ();
-			map.Print ();
+			for (int i = 0; i < 10; i++) {
+				gm.Update ();
+				Console.Clear ();
+				map.Print ();
+			}
 
 			Console.WriteLine ();
 			map.PrintLegend ();
@@ -66,6 +58,21 @@ namespace FactoryPrototype
 			Console.WriteLine ();
 
 			Console.ReadLine ();
+		}
+
+
+		public static void DelayAction(int millisecond, Action action)
+		{
+			var timer = new DispatcherTimer();
+			timer.Tick += delegate
+
+			{
+				action.Invoke();
+				timer.Stop();
+			};
+
+			timer.Interval = TimeSpan.FromMilliseconds(millisecond);
+			timer.Start();
 		}
 	}
 }
